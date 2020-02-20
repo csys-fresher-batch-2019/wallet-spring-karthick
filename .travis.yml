@@ -1,0 +1,10 @@
+language: java
+jdk: oraclejdk8
+deploy:
+  provider: cloudfoundry
+  username: karrthicks10@gmail.com
+  password: *****
+  api: https://api.run.pivotal.io
+  organization: citiipay
+  space: development
+  manifest: manifest.yml
