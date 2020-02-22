@@ -4,7 +4,7 @@ applications:
   buildpack: java_buildpack
   memory: 1G
   instances: 1
-  path: target/app-0.0.1-SNAPSHOT.jar
+  path: target/app-0.0.1-SNAPSHOT.war
   env:
     DB_URL: jdbc:oracle:thin:localhost:1521:XE
     DB_NAME: xe
