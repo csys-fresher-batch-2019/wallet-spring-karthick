@@ -1,6 +1,4 @@
 language: java
-sudo: true
-jdk: oraclejdk9
 deploy:
   provider: cloudfoundry
   username: karrthicks10@gmail.com
@@ -9,6 +7,6 @@ deploy:
   organization: citiipay
   space: development
   manifest: manifest.yml
-script:
+#script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install
+  #- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install
