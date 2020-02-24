@@ -11,8 +11,8 @@ public class Connect {
 		String server = "13.235.147.120";// "localhost";
 		TimeZone timeZone = TimeZone.getTimeZone("Asia/Kolkata");
 			TimeZone.setDefault(timeZone);
-		Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@" + server + ":1521:XE", "system",
-				"oracle");
+		Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@" + server + ":1521:XE", "karthick",
+				"karthick");
 		return connection;
 	}
 }

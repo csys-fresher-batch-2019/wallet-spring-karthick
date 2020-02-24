@@ -5,7 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<jsp:include page="demo.jsp"></jsp:include>
 <style>
 div.c {
   font-size: 150%;
@@ -42,13 +41,15 @@ body {
 
 
 </pre>
-<br>
 <h2>Business Signup</h2>
 <br>
 <body>
 <form action="BussOtpVerification">
-<div class="c"><class="thicker"><pre>    Mobile Number :<input type="number" name="mobilenumber" pattern="[0-9]{10}  placeholder="Enter mobile number" autofocus required> </pre></div><br>
-<br>
+<div class="c"><class="thicker"><pre>    Mobile Number :<input type="number" name="mobilenumber" pattern="[0-9]{10} placeholder="Enter mobile number" autofocus required> </pre></div><br>
+<!--<div class="c"><class="thicker"><pre>Verification OTP :<input type="number" name="otp" maxlength="10" placeholder="Enter OTP" required><br /></pre></div>
+<pre>Pin Number    :<input type="password" name="pinnumber" min="1000" max="9999" placeholder="Enter pin"><br /></pre>
+<pre>Reconfirm Pin :<input type="password" name="confirmation" placeholder="Re-enter pin"><br /></pre> 
+ -->
 <h5><button type="submit">Send OTP</button><h5>
 </form>
 <%
@@ -59,5 +60,6 @@ if(result!=null){%>
 <%} 
 
 %>
+
 </body>
 </html>

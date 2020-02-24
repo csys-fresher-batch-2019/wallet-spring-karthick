@@ -43,7 +43,7 @@ body {
 
 </pre>
 <br>
-<h2>Business Signup</h2>
+<h2>Personal Signup</h2>
 <br>
 <body>
 <body>
