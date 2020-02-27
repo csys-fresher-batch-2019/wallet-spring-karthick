@@ -29,7 +29,7 @@ public class TopupServlet extends HttpServlet {
 		try {
 			String result=obj1.accountToWallet(senderNo, Accountnumber, TransferAmount, comments);
 			request.setAttribute("result",result);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("TopupSuccess.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("TopupWallet.jsp");
 			dispatcher.forward(request, response);
 		} catch (DBException e) {
 			e.printStackTrace();

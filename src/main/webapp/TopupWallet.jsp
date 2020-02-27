@@ -39,7 +39,18 @@ body {
 
 
 
-
+<%
+String result=(String)request.getAttribute("result");
+if(result!=null){
+	if(result.equals("Transaction Successfull")){%>
+	<br>
+		<h1><pre><font color="green"><%=result %> </font></pre></h1>
+   <%}
+	else{%>
+	<br>
+		<h1><pre><font color="red"><%=result %> </font></pre></h1>
+		<% }
+	}%>
 
 
 
