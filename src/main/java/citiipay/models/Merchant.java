@@ -2,14 +2,23 @@ package citiipay.models;
 
 public class Merchant {
 
-	private int transactionId;
+	private Integer transactionId;
 	private String status;
+	private String errorMessage;
 
-	public int getTransactionId() {
+	public String getErrorMessage() {
+		return errorMessage;
+	}	
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+	public Integer getTransactionId() {
 		return transactionId;
 	}
 
-	public void setTransactionId(int transactionId) {
+	public void setTransactionId(Integer transactionId) {
 		this.transactionId = transactionId;
 	}
 
@@ -19,6 +28,12 @@ public class Merchant {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "Merchant [transactionId=" + transactionId + ", status=" + status + ", errorMessage=" + errorMessage
+				+ "]";
 	}
 
 }

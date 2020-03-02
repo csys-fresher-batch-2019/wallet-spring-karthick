@@ -6,12 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
 
+import org.springframework.stereotype.Repository;
+
 import citiipay.connectionutil.Connect;
 import citiipay.dao.LoginDAO;
 import citiipay.messages.DBException;
 import citiipay.messages.ErrorMessages;
 import citiipay.messages.InfoMessages;
-
+@Repository
 public class LogindaoImpl implements LoginDAO {
 
 	public String personalRegister(long mobileNumber, int pinNumber) throws DBException {

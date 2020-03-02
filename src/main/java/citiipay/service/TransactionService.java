@@ -2,6 +2,8 @@ package citiipay.service;
 
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Service;
+
 import citiipay.dao.TransactionDAO;
 import citiipay.implementation.TransactiondaoImpl;
 import citiipay.messages.DBException;
@@ -9,7 +11,7 @@ import citiipay.models.CashBack;
 import citiipay.models.Merchant;
 import citiipay.models.MerchantTableDetails;
 import citiipay.models.TransactionDetails;
-
+@Service
 public class TransactionService {
 
 	private TransactionDAO transaction = new TransactiondaoImpl();

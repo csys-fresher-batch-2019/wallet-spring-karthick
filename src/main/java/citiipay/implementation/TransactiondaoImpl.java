@@ -9,6 +9,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.springframework.stereotype.Repository;
+
 import citiipay.connectionutil.Connect;
 import citiipay.dao.TransactionDAO;
 import citiipay.messages.DBException;
@@ -17,7 +19,7 @@ import citiipay.models.CashBack;
 import citiipay.models.Merchant;
 import citiipay.models.MerchantTableDetails;
 import citiipay.models.TransactionDetails;
-
+@Repository
 public class TransactiondaoImpl implements TransactionDAO {
 
 	public CashBack walletTransaction(long senderMobileNo, long receiverMobileNo, float amount, String comments)
@@ -121,13 +123,18 @@ public class TransactiondaoImpl implements TransactionDAO {
 			cStmt.registerOutParameter(5, Types.INTEGER);
 			cStmt.executeUpdate();
 			Merchant obj = new Merchant();
-			int id = cStmt.getInt(5);
-			String status = cStmt.getString(4);
-			obj.setTransactionId(id);
-			obj.setStatus(status);
-			if (status.equals("Transaction Successfull")) {
-				SmsSend.msgMerchantPay(merchantId, mobileNo, amount);
-			}
+			String errorMessage = cStmt.getString(4);
+			Integer id = cStmt.getInt(5);
+			if (errorMessage==null) {
+				obj.setStatus("SUCCESS");
+				obj.setTransactionId(id);
+				obj.setErrorMessage(null);
+				}
+			else {
+				obj.setStatus("FAILURE");
+				obj.setTransactionId(null);
+				obj.setErrorMessage(errorMessage);
+				}	
 			return obj;
 		} catch (Exception e) {
 			throw new DBException(ErrorMessages.CONNECTION_FAILURE);

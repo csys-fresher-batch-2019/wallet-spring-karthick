@@ -9,6 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication(exclude=DataSourceAutoConfiguration.class)
+//If the username and password are encrypted in ConnectionUtil-> there is no need of DataSourceAutoConfiguartion
 @ServletComponentScan
 public class AppApplication  extends SpringBootServletInitializer{
 	

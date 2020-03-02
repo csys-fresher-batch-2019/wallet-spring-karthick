@@ -1,9 +1,11 @@
 package citiipay.service;
 
+import org.springframework.stereotype.Service;
+
 import citiipay.dao.LoginDAO;
 import citiipay.implementation.LogindaoImpl;
 import citiipay.messages.DBException;
-
+@Service
 public class LoginService {
 
 	private LoginDAO login = new LogindaoImpl();

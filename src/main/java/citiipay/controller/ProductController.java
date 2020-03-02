@@ -12,7 +12,7 @@ import citiipay.implementation.TransactiondaoImpl;
 import citiipay.messages.DBException;
 import citiipay.models.Merchant;
 
-@CrossOrigin
+@CrossOrigin(origins="*")
 @RestController
 @RequestMapping("api")
 public class ProductController {
@@ -43,8 +43,8 @@ public class ProductController {
 	public Merchant walletpayment(@RequestParam("mobilenumber") long MobileNo, @RequestParam("merchantId") String merchant,
 			@RequestParam("amount") float amount) throws DBException {
 		TransactiondaoImpl obj = new TransactiondaoImpl();
-		Merchant obj1 = new Merchant();
-		obj1=obj.payToMerchant(merchant, MobileNo, amount);
+		Merchant obj1 = obj.payToMerchant(merchant, MobileNo, amount);
+		System.out.println(obj1);
 		return obj1;
 	}
 	

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.TimeZone;
 
+import org.springframework.stereotype.Component;
+@Component
 public class Connect {
 
 	public static Connection connect() throws Exception {

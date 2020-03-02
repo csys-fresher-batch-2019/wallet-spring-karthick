@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
+import org.springframework.stereotype.Repository;
+@Repository
 public class SmsSend {
 
 	public static void msgPersonal(long mobileNo) {
