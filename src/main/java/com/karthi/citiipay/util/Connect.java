@@ -2,13 +2,12 @@ package com.karthi.citiipay.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.TimeZone;
 
 import org.springframework.stereotype.Component;
 @Component
 public class Connect {
 
-	public static Connection connect() throws Exception {
+	/* public static Connection connect() throws Exception {
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 		String server = "13.235.147.120";// "localhost";System.getenv("host");
 		TimeZone timeZone = TimeZone.getTimeZone("Asia/Kolkata");
@@ -21,6 +20,15 @@ public class Connect {
 				password);
 		return connection;
 	}
+	*/
 	
+	public static Connection connect() throws Exception
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+
+		String server = "CSLH2018";
+		Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@"+server+":1521:XE", "system", "oracle");
+		return connection;
+	}
 	
 }

@@ -9,8 +9,11 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.karthi.citiipay.dao.TransactionDAO;
@@ -20,17 +23,19 @@ import com.karthi.citiipay.model.CashBack;
 import com.karthi.citiipay.model.Merchant;
 import com.karthi.citiipay.model.MerchantTableDetails;
 import com.karthi.citiipay.model.TransactionDetails;
-import com.karthi.citiipay.util.Connect;
 
 @Repository
 public class TransactiondaoImpl implements TransactionDAO {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransactiondaoImpl.class);
-
+	
+	@Autowired
+	private DataSource dataSource;
+	
 	public CashBack walletTransaction(long senderMobileNo, long receiverMobileNo, float amount, String comments)
 			throws DBException {
 
-		try (Connection conn = Connect.connect();
+		try (Connection conn = dataSource.getConnection();
 				CallableStatement cStmt = conn.prepareCall("{call wallet_proc(?,?,?,?,?)}");) {
 			cStmt.setLong(1, senderMobileNo);
 			cStmt.setLong(2, receiverMobileNo);
@@ -87,7 +92,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 	@Override
 	public String accountToWallet(long mobileNo, long accountNo, float amount, String comments) throws DBException {
 
-		try (Connection conn = Connect.connect();
+		try (Connection conn = dataSource.getConnection();
 				CallableStatement cStmt = conn.prepareCall("{call account_to_wallet(?,?,?,?,?)}");) {
 			cStmt.setLong(1, accountNo);
 			cStmt.setLong(2, mobileNo);
@@ -108,7 +113,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 	public int addingCashback(long mobileNo, float amount) throws DBException {
 
 		String sql = "update kyc set kyc_wallet=kyc_wallet+" + amount + " where mobile_no=" + mobileNo;
-		try (Connection conn = Connect.connect(); Statement stmt = conn.createStatement();) {
+		try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement();) {
 			int rows = stmt.executeUpdate(sql);
 			return rows;
 
@@ -119,7 +124,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 
 	public Merchant payToMerchant(String merchantId, long mobileNo, float amount) throws DBException {
 
-		try (Connection conn = Connect.connect();
+		try (Connection conn = dataSource.getConnection();
 				CallableStatement cStmt = conn.prepareCall("{call pay_to_merchant(?,?,?,?,?)}");) {
 			cStmt.setString(1, merchantId);
 			cStmt.setLong(2, mobileNo);
@@ -141,6 +146,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 			}
 			return obj;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new DBException(ErrorMessages.CONNECTION_FAILURE);
 		}
 
@@ -149,7 +155,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 	@Override
 	public Merchant refundToCustomer(String merchantId, int transactionId, float amount) throws DBException {
 
-		try (Connection conn = Connect.connect();
+		try (Connection conn = dataSource.getConnection();
 				CallableStatement cStmt = conn.prepareCall("{call refund_to_customer(?,?,?,?)}");) {
 			cStmt.setInt(1, transactionId);
 			cStmt.setString(2, merchantId);
@@ -167,6 +173,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 			}
 			return obj;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new DBException(ErrorMessages.CONNECTION_FAILURE);
 		}
 	}
@@ -174,7 +181,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 	public ArrayList<TransactionDetails> transactionDebited(long mobileNumber) throws DBException {
 
 		String transactionHistory = "select * from transaction_table where categories='Debited' and mobile_no=? order by transaction_time desc";
-		try (Connection conn = Connect.connect(); PreparedStatement stmt = conn.prepareStatement(transactionHistory);) {
+		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(transactionHistory);) {
 			stmt.setLong(1, mobileNumber);
 			ArrayList<TransactionDetails> list = new ArrayList<>();
 			try (ResultSet rs = stmt.executeQuery();) {
@@ -201,7 +208,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 	public ArrayList<TransactionDetails> transactionCredited(long mobileNumber) throws DBException {
 
 		String transactionHistory = "select * from transaction_table where categories='Credited' and mobile_no=? order by transaction_time desc";
-		try (Connection conn = Connect.connect(); PreparedStatement stmt = conn.prepareStatement(transactionHistory);) {
+		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(transactionHistory);) {
 			stmt.setLong(1, mobileNumber);
 			ArrayList<TransactionDetails> list = new ArrayList<>();
 			try (ResultSet rs = stmt.executeQuery();) {
@@ -228,7 +235,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 	public ArrayList<MerchantTableDetails> transactionMerchant(long mobileNumber) throws DBException {
 
 		String transactionHistory = "select * from merchant_details where mobile_no=? order by transaction_time desc";
-		try (Connection conn = Connect.connect(); PreparedStatement stmt = conn.prepareStatement(transactionHistory);) {
+		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(transactionHistory);) {
 			stmt.setLong(1, mobileNumber);
 			ArrayList<MerchantTableDetails> list = new ArrayList<>();
 			try (ResultSet rs = stmt.executeQuery();) {
@@ -253,7 +260,7 @@ public class TransactiondaoImpl implements TransactionDAO {
 
 	public void cashbackTableEntry(long mobileNumber, int cashabck) throws DBException {
 		String sql = "insert into transaction_table(mobile_no,rec_mob_no,categories,transaction_amount,status,comments) values(?,8608872041,'Credited',?,'Success','Cashback')";
-		try (Connection conn = Connect.connect(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setLong(1, mobileNumber);
 			stmt.setLong(2, cashabck);
 			stmt.executeUpdate();

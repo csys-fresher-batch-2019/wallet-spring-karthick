@@ -6,23 +6,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.karthi.citiipay.exception.DBException;
 import com.karthi.citiipay.exception.ErrorMessages;
 import com.karthi.citiipay.exception.InfoMessages;
-import com.karthi.citiipay.util.Connect;
 
 @Repository
 public class LogindaoImpl implements com.karthi.citiipay.dao.LoginDAO {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LogindaoImpl.class);
+	
+	@Autowired
+	private DataSource dataSource;
 
 	public String personalRegister(long mobileNumber, int pinNumber) throws DBException {
 
-		try (Connection conn = Connect.connect();
+		try (Connection conn = dataSource.getConnection();
 				CallableStatement stmt = conn.prepareCall("{call register_loginpersonal(?,?,?)}");) {
 			stmt.setLong(1, mobileNumber);
 			stmt.setInt(2, pinNumber);
@@ -41,7 +46,7 @@ public class LogindaoImpl implements com.karthi.citiipay.dao.LoginDAO {
 
 	public int mobPersonalVerification(long mobileNumber) throws DBException {
 
-		try (Connection conn = Connect.connect();
+		try (Connection conn = dataSource.getConnection();
 				CallableStatement stmt = conn.prepareCall("{call mob_chk_proc(?,?)}");) {
 			stmt.setLong(1, mobileNumber);
 			stmt.registerOutParameter(2, Types.INTEGER);
@@ -54,7 +59,7 @@ public class LogindaoImpl implements com.karthi.citiipay.dao.LoginDAO {
 	}
 
 	public String bussinessRegister(long mobileNumber, String merchantId, long accountNo) throws DBException {
-		try (Connection conn = Connect.connect();
+		try (Connection conn = dataSource.getConnection();
 				CallableStatement stmt = conn.prepareCall("{call register_bussiness(?,?,?,?)}");) {
 			stmt.setLong(1, mobileNumber);
 			stmt.setString(2, merchantId);
@@ -73,7 +78,8 @@ public class LogindaoImpl implements com.karthi.citiipay.dao.LoginDAO {
 
 	public int mobBussinessVerification(long mobileNumber) throws DBException {
 
-		try (Connection conn = Connect.connect(); CallableStatement stmt = conn.prepareCall("{call mob_new(?,?)}");) {
+		try (Connection conn = dataSource.getConnection();
+				CallableStatement stmt = conn.prepareCall("{call mob_new(?,?)}");) {
 			stmt.setLong(1, mobileNumber);
 			stmt.registerOutParameter(2, Types.INTEGER);
 			stmt.executeUpdate();
@@ -86,7 +92,7 @@ public class LogindaoImpl implements com.karthi.citiipay.dao.LoginDAO {
 
 	public String login(long mobileNumber, int pinNumber) throws DBException {
 
-		try (Connection conn = Connect.connect();
+		try (Connection conn = dataSource.getConnection();
 				CallableStatement cStmt = conn.prepareCall("{call login_personal(?,?,?)}");) {
 			cStmt.setLong(1, mobileNumber);
 			cStmt.setInt(2, pinNumber);
@@ -102,7 +108,7 @@ public class LogindaoImpl implements com.karthi.citiipay.dao.LoginDAO {
 
 	public String forgetPassword(long mobileNumber, int pinNumber) throws DBException {
 		String sql = "update login set upi_passwd=? where mobile_no=?";
-		try (Connection conn = Connect.connect(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setInt(1, pinNumber);
 			stmt.setLong(2, mobileNumber);
 			String result = "";
@@ -122,7 +128,8 @@ public class LogindaoImpl implements com.karthi.citiipay.dao.LoginDAO {
 	public int balanceCheck(long mobileNumber) throws DBException {
 
 		String balanceSql = "select kyc_wallet from kyc where mobile_no=?";
-		try (Connection conn = Connect.connect(); PreparedStatement stmt2 = conn.prepareStatement(balanceSql);) {
+		try (Connection conn = dataSource.getConnection();
+				PreparedStatement stmt2 = conn.prepareStatement(balanceSql);) {
 			stmt2.setLong(1, mobileNumber);
 			int result = 0;
 			try (ResultSet rs2 = stmt2.executeQuery();) {
@@ -140,7 +147,7 @@ public class LogindaoImpl implements com.karthi.citiipay.dao.LoginDAO {
 
 	public String pinUpdate(long mobileNumber, int pinNumber) throws DBException {
 		String sql = "update login set upi_passwd=? where mobile_no=?";
-		try (Connection conn = Connect.connect(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
 			stmt.setInt(1, pinNumber);
 			stmt.setLong(2, mobileNumber);
 			String result = "";
