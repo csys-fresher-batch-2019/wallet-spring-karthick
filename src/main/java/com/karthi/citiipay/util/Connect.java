@@ -26,7 +26,7 @@ public class Connect {
 	{
 		Class.forName("oracle.jdbc.driver.OracleDriver");
 
-		String server = "CSLH2018";
+		String server = "localhost";
 		Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@"+server+":1521:XE", "system", "oracle");
 		return connection;
 	}

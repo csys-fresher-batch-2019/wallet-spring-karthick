@@ -66,7 +66,7 @@ public class ProductController {
 	@GetMapping("/geolocation")
 	public Coordinates location(@RequestParam("speed") int Speed,
 			@RequestParam("latitude") float Lattitude,@RequestParam("longitude") float Longitude) throws DBException{
-		Coordinates obj2=coordinateImpl.checkStatus(Speed, Lattitude, Longitude);
+		Coordinates obj2=coordinateImpl.checkStatuss(Speed, Lattitude, Longitude);
 		System.out.println(obj2);
 		return obj2;
 		

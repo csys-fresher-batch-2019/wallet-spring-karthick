@@ -21,7 +21,7 @@ public class CoordinateDetails implements CoordinateDAO{
 	@Autowired
 	private DataSource dataSource;
 	
-	public Coordinates checkStatus(int speed, float lattitude, float longitude) throws DBException {
+	public Coordinates checkStatuss(int speed, float lattitude, float longitude) throws DBException {
 		
 		try (Connection conn = dataSource.getConnection();
 				CallableStatement Stmt = conn.prepareCall("{call geo_location(?,?,?,?)}");) {

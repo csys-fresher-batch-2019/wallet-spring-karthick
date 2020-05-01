@@ -33,10 +33,6 @@ public class Coordinates {
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
 	}
-	@Override
-	public String toString() {
-		return "Coordinates [speed=" + speed + ", latitude=" + latitude + ", longitude=" + longitude + ", status="
-				+ status + "]";
-	}
+	
 
 }
